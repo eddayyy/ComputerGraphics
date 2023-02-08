@@ -40,11 +40,18 @@ screen = (-1, 1 / ratio, 1, -1 / ratio) # left, top, right, bottom
 light = { 'position': np.array([5, 5, 5]), 'ambient': np.array([1, 1, 1]), 'diffuse': np.array([1, 1, 1]), 'specular': np.array([1, 1, 1]) }
 
 objects = [
-    { 'center': np.array([0.2, 0, -.5]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
-    { 'center': np.array([0.2, .70, -.4]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
-    { 'center': np.array([0.2, -.70, -.3]), 'radius': 0.1, 'ambient': np.array([0, 0.1, 0]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
-    { 'center': np.array([0.2, .30, -.2]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
-    { 'center': np.array([0.2, -.30, -.1]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    # Y-Axis Spheres
+    { 'center': np.array([0, 0, .4]), 'radius': 0.08, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([0, .20, .3]), 'radius': 0.08, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([0, -.50,0]), 'radius': 0.08, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([0, .50, 0]), 'radius': 0.08, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([0, -.2,.3]), 'radius': 0.08, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    # X-Axis Spheres
+    { 'center': np.array([0.3, 0, -.1]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([-0.3, 0, -.3]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([0.7, 0, .1]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+    { 'center': np.array([-0.7, 0, -.6]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array([0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 },
+
     { 'center': np.array([0, -9000, 0]), 'radius': 9000 - 0.7, 'ambient': np.array([0.1, 0.1, 0.1]), 'diffuse': np.array([0.6, 0.6, 0.6]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5 }
 ]
 
