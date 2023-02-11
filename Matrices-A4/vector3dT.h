@@ -10,6 +10,7 @@
 #include <cstring>
 #include <cmath>
 #include <initializer_list>
+#include <cassert>
 
 template <typename T> class vector3d;
 
@@ -57,25 +58,31 @@ public:
                     { u[0] + v[0], u[1] + v[1], u[2] + v[2], 0} );
   }  
 
-  friend vector3d<T> operator-(const vector3d<T>& u, const vector3d<T>& v) { /* TODO */ }
+  friend vector3d<T> operator-(const vector3d<T>& u, const vector3d<T>& v) { 
+    check_equal_dims(u, v);
+    return vector3d<T>(u.name_ + "-" + v.name_, u.dims_,
+                    { u[0] - v[0], u[1] - v[1], u[2] - v[2], 0} );
+   }
 //---------------------------------------------------------------------
-  friend vector3d<T> operator+(T k, const vector3d<T>& v) {
-    return vector3d<T>(std::to_string(k) + "+" + v.name_, v.dims_, { k + v[0], k + v[1], k + v[2], 0 });
-  }
-  friend vector3d<T> operator+(const vector3d<T>& v, T k) { /* TODO */ }
+  friend vector3d<T> operator+(const vector3d<T>& v, T k) { 
+    return vector3d<T>(v.name_ + "+" + std::to_string(k), v.dims_, { v[0] + k, v[1] + k, v[2] + k, 0 });
+   }
+  friend vector3d<T> operator+(T k, const vector3d<T>& v) { return v + k; }
 //---------------------------------------------------------------------
-  friend vector3d<T> operator-(T k, const vector3d<T>& v) { /* TODO */ }
-  friend vector3d<T> operator-(const vector3d<T>& v, T k) { /* TODO */ }
-  //---------------------------------------------------------------------
-  friend vector3d<T> operator*(T k, const vector3d<T>& v) {
-    return vector3d<T>(std::to_string(k) + v.name_, v.dims_, { k * v[0], k * v[1], k * v[2], 0 });
+  friend vector3d<T> operator-(const vector3d<T>& v, T k) {
+    return vector3d<T>(v.name_ + "-" + std::to_string(k), v.dims_, { v[0] - k, v[1] - k, v[2] - k, 0 });
   }
-  friend vector3d<T> operator*(const vector3d<T>& v, T k) { /* TODO */ };
-  //---------------------------------------------------------------------
+  friend vector3d<T> operator-(T k, const vector3d<T>& v) { return v * -1 + k; }
+//---------------------------------------------------------------------
+  friend vector3d<T> operator*(const vector3d<T>& v, T k) { 
+    return vector3d<T>(v.name_ + "*" + std::to_string(k), v.dims_, { v[0] * k, v[1] * k, v[2] * k, 0 });
+   };
+  friend vector3d<T> operator*(T k, const vector3d<T>& v) { return v * k; }
+//---------------------------------------------------------------------
   friend vector3d<T> operator/(const vector3d<T>& v, T k) {
     if (k == 0) { throw new std::invalid_argument("divide by zero"); }
     double kinv = 1.0 / k;
-    return kinv * v;
+    return v * kinv;
   }
 //---------------------------------------------------------------------
   friend bool operator<(const vector3d<T>& u, const vector3d<T>& v) {
@@ -202,8 +209,17 @@ private:
   std::string name_;
   int dims_;
   T data_[4];
+
+// use for operator== and division to test if dividing by a number that is very close to 0
+  static double epsilon_;
 };
 
+template<typename T> double vector3d<T>::epsilon_ = 1e-10;    
+
+
+
+//==============================================================================
+// implementation code
 //==============================================================================
 
 template <typename T> vector3d<T>::vector3d() : vector3d("no_name", 3) {}  // 3d default dims
@@ -233,10 +249,20 @@ vector3d<T>& vector3d<T>::operator+=(const vector3d<T>& v) {
   return *this;
 }
 template <typename T>
-vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { /* TODO */ }
+vector3d<T>& vector3d<T>::operator-=(const vector3d<T>& v) { operator+=(-v); }
 //---------------------------------------------------------------------
-template <typename T> vector3d<T>& vector3d<T>::operator+=(T k) { /* TODO */ }
-template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) { /* TODO */ }
+template <typename T> vector3d<T>& vector3d<T>::operator+=(T k) { 
+    vector3d<T>& u = *this;
+    u.name_ += "+=" + std::to_string(k);
+    u[0] += k;  u[1] += k;  u[2] += k;
+    return *this;
+}
+template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) { 
+    vector3d<T>& u = *this;
+    u.name_ += "-=" + std::to_string(k);
+    u[0] -= k;  u[1] -= k;  u[2] -= k;
+    return *this;
+ }
 template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { /* TODO */ }
 template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { /* TODO */ }
 
@@ -244,20 +270,28 @@ template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { /* TODO */ }
 template <typename T>  /* read only idx */
 T  vector3d<T>::operator[](int i) const {  check_bounds(i);  return data_[i]; }
 
-template <typename T> T& vector3d<T>::operator[](int i) { /* TODO */ } // rw idx
+template <typename T> T& vector3d<T>::operator[](int i) { 
+  check_bounds(i); return data_[i]; 
+} // rw idx
 
 //-----------------------
 template <typename T>
 vector3d<T> vector3d<T>::operator-() { return vector3d("-" + name_, dims_, { -data_[0], -data_[1], -data_[2], 0 }); }
 //-----------------------
 template <typename T>
-double vector3d<T>::dot(const vector3d<T>& v) const { /* TODO */ }
+double vector3d<T>::dot(const vector3d<T>& v) const { 
+    return data_[0] * v[0] + data_[1] * v[1] + data_[2] * v[2];
+}
 //-----------------------
 template <typename T>
 double vector3d<T>::mag() const {  return sqrt(dot(*this));  }
 
 template <typename T>
-double vector3d<T>::angle(const vector3d<T>& v) const { /* TODO */ }
+double vector3d<T>::angle(const vector3d<T>& v) const { 
+  // u.dot(v) = u.mag() * v.mag() * cos(theta)
+  // or... cos(theta) = u.dot(v) / (u.mag() * v.mag())
+  return acos(dot(v) / (mag() * v.mag()));
+ }
 //-----------------------
 template <typename T>
 vector3d<T> vector3d<T>::cross(const vector3d<T>& v) const {
