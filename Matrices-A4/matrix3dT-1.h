@@ -57,36 +57,47 @@ public:
                     { a[0] + k, a[1] + k, a[2] + k });
   }
   friend matrix3d operator+(T k, const matrix3d& a) { return  a + k; }
-  // TODO #1
+  // Todo 
   friend matrix3d operator-(const matrix3d& a, T k) { 
-    matrix3d result;
-    for (int i = 0; i < 9; ++i) {
-      result.data_[i] = a.data_[i] - k;
+    matrix3d<T> result(a.rows(), a.cols(), a.depth());
+    for (int i = 0; i < a.rows(); ++i) {
+      for (int j = 0; j < a.cols(); ++j) {
+        for (int k = 0; k < a.depth(); ++k) {
+          result(i, j, k) = a(i, j, k) - k;
+        }
+      }
     }
   return result;
-}
-  // TODO #2 
+  }
+  // Todo
   friend matrix3d operator-(T k, const matrix3d& a) { 
-    matrix3d result;
-    for(auto i = 0; i < 0; i++){
-      result.data_[i] = k - a.data_[i];
+    matrix3d<T> result(a.rows_, a.cols_, a.depth_);
+    for (int i = 0; i < a.rows_; i++) {
+      for (int j = 0; j < a.cols_; j++) {
+        for (int k = 0; k < a.depth_; k++) {
+          result(i, j, k) = k - a(i, j, k);
+        }
+      }
     }
     return result;
   }
-  // TODO #3
+  // Todo
   friend matrix3d operator*(const matrix3d& a, T k) { 
-    matrix3d result;
-    for(int i = 0; i < 9; i++){
-      result.data_[i] = a.data_[i] * k;
+    matrix3d<T> result(a);
+    for (auto& element : result.elements_) {
+      element *= k;
     }
     return result;
-  }
-  // TODO #4 
+   }
+  // Todo
   friend matrix3d<T> operator*(T k, const matrix3d& a) { 
-    matrix3d result; 
-    for(int i = 0; i < 9; i++){
-      result.data_[i] = k * a.data_[i];
+  matrix3d<T> result(a.get_rows(), a.get_cols(), T(0));
+  for (int i = 0; i < a.get_rows(); i++) {
+    for (int j = 0; j < a.get_cols(); j++) {
+      result(i, j) = k * a(i, j);
     }
+  }
+  return result;
   }
   friend matrix3d operator/(const matrix3d& a, T k) { 
     if (abs(k) < epsilon_) { throw new std::invalid_argument("divide by zero error"); }
@@ -371,21 +382,19 @@ template <typename T> vector3d<T>& matrix3d<T>::operator[](int i) {
   return cols_[i];
 }
 template <typename T> T matrix3d<T>::operator()(int row, int col) const { return cols_[col][row]; }
-
-// TODO #5
+// Todo
 template <typename T> T& matrix3d<T>::operator()(int row, int col) { 
- if (row < 0 || row >= 3 || col < 0 || col >= 3) {
-        throw std::out_of_range("Matrix3d index out of range");
-    }
-    return data_[3 * row + col];
+  if (row < 0 || row >= rows_ || col < 0 || col >= cols_) {
+      throw std::out_of_range("matrix3d::operator(): index out of range");
+  }
+  return data_[row * cols_ + col];
 }
-
- // TODOD #6
+ // Todo
 template <typename T> T* matrix3d<T>::opengl_memory(int row, int col) { 
- if (row < 0 || row >= 3 || col < 0 || col >= 3) {
-        throw std::out_of_range("Matrix3d index out of range");
-    }
-    return &data_[3 * row + col];
+  if (row >= rows_ || col >= cols_ || row < 0 || col < 0) {
+    throw std::out_of_range("Index out of range");
+  }
+  return &data_[row * cols_ + col];
 }
 // implement code here
 //=================================================================================================
@@ -399,10 +408,13 @@ template <typename T> matrix3d<T>& matrix3d<T>::operator+=(T k) {
     a[i] += k;
   }
   return *this;
-}
+} 
 template <typename T> matrix3d<T>& matrix3d<T>::operator-=(T k) { operator+=(-k); }
 template <typename T> matrix3d<T>& matrix3d<T>::operator*=(T k) { 
-  
+    for (int i = 0; i < size_; i++) {
+        data_[i] *= k;
+    }
+    return *this;
  }
 template <typename T> matrix3d<T>& matrix3d<T>::operator/=(T k) { 
   if (abs(k) < epsilon_) { throw new std::invalid_argument("divide by zero\n"); }
@@ -430,7 +442,17 @@ template <typename T> matrix3d<T> matrix3d<T>::operator+(const matrix3d<T>& b) {
   return matrix3d<T>(name_ + "+" + b.name_, dims_,
                     { a[0] + b[0], a[1] + b[1], a[2] + b[2] });
 }
-template <typename T> matrix3d<T> matrix3d<T>::operator-(const matrix3d<T>& b) { /* TODO */ }
+template <typename T> matrix3d<T> matrix3d<T>::operator-(const matrix3d<T>& b) { 
+  if (dims_ != b.dims_) {
+    throw std::invalid_argument("Matrix dimensions do not match");
+  }
+
+  matrix3d<T> result(name_, dims_);
+  for (int i = 0; i < size_; i++) {
+    result.data_[i] = data_[i] - b.data_[i];
+  }
+  return result;
+}
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::operator*(const matrix3d<T>& b) {
   matrix3d res(name_ + "+" + b.name_, 3);
@@ -453,7 +475,14 @@ template <typename T> matrix3d<T> matrix3d<T>::transpose() const {
                                 m(0,2), m(1,2), m(2,2),  m(0,3), m(1,3), m(2,3)} );
   return res;
 }
-template <typename T> T matrix3d<T>::determinant() const { /* TODO */ }
+// Todo
+template <typename T> T matrix3d<T>::determinant() const { 
+  T a11 = data_[0], a12 = data_[1], a13 = data_[2];
+  T a21 = data_[3], a22 = data_[4], a23 = data_[5];
+  T a31 = data_[6], a32 = data_[7], a33 = data_[8];
+  
+  return a11*(a22*a33 - a23*a32) - a12*(a21*a33 - a23*a31) + a13*(a21*a32 - a22*a31);
+ }
 template <typename T> T matrix3d<T>::trace() const {
         const matrix3d<T>& m = *this;
         return m(0, 0) + m(1, 1) + m(2, 2);
@@ -483,8 +512,29 @@ template <typename T> matrix3d<T> matrix3d<T>::minors() const {
     m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0),
   });
 }
-template <typename T> matrix3d<T> matrix3d<T>::cofactor() const { /* TODO */ }
-template <typename T> matrix3d<T> matrix3d<T>::adjoint() const { /* TODO */ }
+template <typename T> matrix3d<T> matrix3d<T>::cofactor() const { 
+  matrix3d<T> c;
+
+  c(0, 0) =  det_2x2((*this)(1, 1), (*this)(1, 2), (*this)(2, 1), (*this)(2, 2));
+  c(0, 1) = -det_2x2((*this)(1, 0), (*this)(1, 2), (*this)(2, 0), (*this)(2, 2));
+  c(0, 2) =  det_2x2((*this)(1, 0), (*this)(1, 1), (*this)(2, 0), (*this)(2, 1));
+  c(1, 0) = -det_2x2((*this)(0, 1), (*this)(0, 2), (*this)(2, 1), (*this)(2, 2));
+  c(1, 1) =  det_2x2((*this)(0, 0), (*this)(0, 2), (*this)(2, 0), (*this)(2, 2));
+  c(1, 2) = -det_2x2((*this)(0, 0), (*this)(0, 1), (*this)(2, 0), (*this)(2, 1));
+  c(2, 0) =  det_2x2((*this)(0, 1), (*this)(0, 2), (*this)(1, 1), (*this)(1, 2));
+  c(2, 1) = -det_2x2((*this)(0, 0), (*this)(0, 2), (*this)(1, 0), (*this)(1, 2));
+  c(2, 2) =  det_2x2((*this)(0, 0), (*this)(0, 1), (*this)(1, 0), (*this)(1, 1));
+  return c;
+}
+
+template <typename T>
+T det_2x2(T a, T b, T c, T d) {
+    return a * d - b * c;
+}
+
+template <typename T> matrix3d<T> matrix3d<T>::adjoint() const {
+  
+}
 template <typename T> matrix3d<T> matrix3d<T>::inverse() const { /* TODO */ }
 //=================================================================================================
 template <typename T> matrix3d<T> matrix3d<T>::identity(int dims) { /* TODO */ }

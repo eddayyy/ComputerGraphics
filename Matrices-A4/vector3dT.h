@@ -102,7 +102,7 @@ public:
   vector3d<T> cross(const vector3d<T>& other) const;
 //---------------------------------------------------------------------
   static vector3d<T> zero();
-  static double value(double val) { return abs(val) < 1e-5 ? 0 : val; }
+  static double value(double val) { return std::abs(val) < 1e-5 ? 0 : val; }
 
 //---------------------------------------------------------------------
 friend std::ostream& operator<<(std::ostream& os, const vector3d<T>& v) {
@@ -263,8 +263,20 @@ template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) {
     u[0] -= k;  u[1] -= k;  u[2] -= k;
     return *this;
  }
-template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { /* TODO */ }
-template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { /* TODO */ }
+ // Todo
+template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { 
+    for (int i = 0; i < dims_; i++) {
+    data_[i] *= k;
+  }
+  return *this;
+ }
+ // Todo
+template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { 
+  x /= k;
+  y /= k;
+  z /= k;
+  return *this;
+}
 
 //---------------------------------------------------------------------
 template <typename T>  /* read only idx */
