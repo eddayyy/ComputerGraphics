@@ -263,18 +263,21 @@ template <typename T> vector3d<T>& vector3d<T>::operator-=(T k) {
     u[0] -= k;  u[1] -= k;  u[2] -= k;
     return *this;
  }
- // Todo
-template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) { 
-    for (int i = 0; i < dims_; i++) {
-    data_[i] *= k;
-  }
+
+// TODO #1
+template <typename T> vector3d<T>& vector3d<T>::operator*=(T k) {
+  x() *= k;
+  y() *= k;
+  z() *= k;
   return *this;
- }
- // Todo
-template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) { 
-  x /= k;
-  y /= k;
-  z /= k;
+}
+
+
+// TODO #2 
+template <typename T> vector3d<T>& vector3d<T>::operator/=(T k) {
+  x() /= k;
+  y() /= k;
+  z() /= k;
   return *this;
 }
 
