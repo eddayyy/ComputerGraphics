@@ -18,6 +18,7 @@ int main(int argc, const char * argv[]) {
 }
 
 /*
+TEST RESULT 
 ====================  TESTING VECTORS  ========================
 u.name_ is: u
 <u,   1   2   4   0>
@@ -250,5 +251,4 @@ asserting that q * n == n * q
 
 
                 >>>>>>>>>>  CONGRATULATIONS -- all assertions passed  <<<<<<<<<< 
-
 */
