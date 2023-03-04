@@ -105,7 +105,7 @@ private:
 };
 
 void plane_rotation(const std::string& msg, const quatD& plane, const std::initializer_list<double>& li) {
- matrix3dD rotate = matrix3dD("rot_matrix", 3, li);
+ matrix3D rotate = matrix3D("rot_matrix", 3, li);
  assert(plane.rot_matrix() == rotate);
  std::cout << msg << " is: " << plane << plane.rot_matrix() << "\n";
 }
