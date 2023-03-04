@@ -1,6 +1,6 @@
-//============================================================
-// FILE: matrix3dT.h
-//============================================================
+// Author: Eduardo Nunez
+// Author email: eduardonunez@csu.fullerton.edu
+
 #ifndef __matrix_3d__
 #define __matrix_3d__
 
@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <cstring>
 #include <cmath>
-#include "vector3dT.h"
+#include "vector3d_T.h"
 
 template <typename T> class matrix3d;
 typedef matrix3d<double> matrix3D;

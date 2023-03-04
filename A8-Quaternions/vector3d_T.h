@@ -1,6 +1,5 @@
-//============================================================
-// FILE: vector3dT.h
-//============================================================
+// Author: Eduardo Nunez
+// Author email: eduardonunez@csu.fullerton.edu
 
 #ifndef __vector3dT_H__
 #define __vector3dT_H__

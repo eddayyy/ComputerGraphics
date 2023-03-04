@@ -1,11 +1,13 @@
+// Author: Eduardo Nunez
+// Author email: eduardonunez@csu.fullerton.edu
 
 #include "quaternion_T.h"
 
 void test_quaternions() {
-    print("\n====================  TESTING QUATERNIONS  ========================");
+    printf("\n====================  TESTING QUATERNIONS  ========================");
     quaternion<double>::run_tests();
-    print("...test_matrices_and_vectors assertions passed");
-    print("====================  FINISHED testing quaternions  ========================");
+    printf("...test_matrices_and_vectors assertions passed");
+    printf("====================  FINISHED testing quaternions  ========================");
 }
 
 int main(int argc, const char * argv[]) {
@@ -13,6 +15,6 @@ int main(int argc, const char * argv[]) {
 //  test_matrices();
 //  test_matrices_and_vectors();
   test_quaternions();
-  print("... program completed...\n");
+  printf("... program completed...\n");
   return 0;
 }
