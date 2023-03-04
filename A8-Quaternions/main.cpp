@@ -2,6 +2,7 @@
 // Author email: eduardonunez@csu.fullerton.edu
 
 #include "quaternion_T.h"
+#include <stdio.h>
 
 void test_quaternions() {
     printf("\n====================  TESTING QUATERNIONS  ========================");
@@ -11,10 +12,14 @@ void test_quaternions() {
 }
 
 int main(int argc, const char * argv[]) {
-//  test_vectors();
-//  test_matrices();
-//  test_matrices_and_vectors();
-  test_quaternions();
-  printf("... program completed...\n");
-  return 0;
+    FILE *fp;
+    fp = freopen("output.txt", "w", stdout); // redirect stdout to a file
+    if (fp == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    test_quaternions();
+    printf("... program completed...\n");
+    fclose(fp);
+    return 0;
 }
