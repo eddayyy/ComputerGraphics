@@ -23,3 +23,208 @@ int main(int argc, const char * argv[]) {
     fclose(fp);
     return 0;
 }
+
+/*
+====================  TESTING QUATERNIONS  ========================a = Quat(1<Vector,   2   3   4   0>))
+b = Quat(4<Vector,   0   0   7   0>))
+c = Quat(0<Vector,   1   1   0   0>))
+d = Quat(j))
+e = Quat(k))
+f = Quat(0))
+g = Quat(1))
+h = Quat(3)
+c + d = Quat(0<Vector,   1   2   0   0>)
+c + d + e = Quat(0<Vector,   1   2   1   0>)
+5 * h = Quat(15)
+h * 5 = Quat(15)
+h / 3.0 = Quat(1)
+
+h.magnitude() is 3
+h.unit() is Quat(1)g.unit() is Quat(1)
+a.unit() is Quat(0.183<Vector, 0.365 0.548 0.73   0>))
+
+a.vector() is <Vector,   2   3   4   0>
+a.scalar() is 1
+a.conjugate() is Quat(1<Vector,  -2  -3  -4   0>)
+a.inverse() is Quat(0.0333<Vector, -0.0667 -0.1 -0.133   0>)
+a * a.inverse() is Quat(1)
+
+c == d is no
+c != d is YES
+e == e is YES
+e != e is no
+
+
+quat.ij is: Quat(k)
+quat.jk is: Quat(i)
+quat.ki is: Quat(j)
+
+quat.ji is: Quat(-k)
+quat.kj is: Quat(-i)
+quat.ik is: Quat(-j)
+quat.ijk is: -1
+
+quat.ii is: -1
+quat.jj is: -1
+quat.kk is: -1
+
+angle (deg) between c and d is: 45
+c_minus_d is: Quat(i)rot_matrix of c_minus_d is: <'', <col0,   1   0   0   0><col1,   0  -1   0   0><col2,   0   0  -1   0>> OR by rows...
+  1   0   0 
+  0  -1   0 
+  0   0  -1 
+>
+// -------------- LEVEL FLIGHT -------------------')
+levelFlight(E) is: Quat(1)<'', <col0,   1   0   0   0><col1,   0   1   0   0><col2,   0   0   1   0>> OR by rows...
+  1   0   0 
+  0   1   0 
+  0   0   1 
+>
+levelFlight(N) is: Quat(0.707<Vector,   0 0.707   0   0>)<'', <col0,   0   0  -1   0><col1,   0   1   0   0><col2,   1   0   0   0>> OR by rows...
+-2.22e-16   0   1 
+  0   1   0 
+ -1   0 -2.22e-16 
+>
+levelFlight(W) is: Quat(j)<'', <col0,  -1   0   0   0><col1,   0   1   0   0><col2,   0   0  -1   0>> OR by rows...
+ -1   0   0 
+  0   1   0 
+  0   0  -1 
+>
+levelFlight(S) is: Quat(0.707<Vector,   0 -0.707   0   0>)<'', <col0,   0   0   1   0><col1,   0   1   0   0><col2,  -1   0   0   0>> OR by rows...
+-2.22e-16  -0  -1 
+  0   1  -0 
+  1   0 -2.22e-16 
+>
+LEVEL FLIGHT assertions passed ..............................................
+// --------- end LEVEL FLIGHT ------------------------)
+// -------------- STRAIGHT UP -------------------')
+straightUp(E) is: Quat(0.707<Vector,   0   0 0.707   0>)<'', <col0,   0   1   0   0><col1,  -1   0   0   0><col2,   0   0   1   0>> OR by rows...
+-2.22e-16  -1   0 
+  1 -2.22e-16   0 
+  0   0   1 
+>
+straightUp(N) is: Quat(0.5<Vector, 0.5 0.5 0.5   0>)<'', <col0,   0   1   0   0><col1,   0   0   1   0><col2,   1   0   0   0>> OR by rows...
+  0   0   1 
+  1   0   0 
+  0   1   0 
+>
+straightUp(W) is: Quat(0<Vector, 0.707 0.707   0   0>)<'', <col0,   0   1   0   0><col1,   1   0   0   0><col2,   0   0  -1   0>> OR by rows...
+-2.22e-16   1   0 
+  1 -2.22e-16   0 
+  0   0  -1 
+>
+straightUp(S) is: Quat(0.5<Vector, -0.5 -0.5 0.5   0>)<'', <col0,   0   1   0   0><col1,   0   0  -1   0><col2,  -1   0   0   0>> OR by rows...
+  0   0  -1 
+  1   0   0 
+  0  -1   0 
+>
+STRAIGHT UP assertions passed..............................................
+// --------- end STRAIGHT UP ------------------------)
+
+// -------------- STRAIGHT DOWN ------------------')
+straightDown(E) is: Quat(0.707<Vector,   0   0 -0.707   0>)<'', <col0,   0  -1   0   0><col1,   1   0   0   0><col2,   0   0   1   0>> OR by rows...
+-2.22e-16   1   0 
+ -1 -2.22e-16  -0 
+ -0   0   1 
+>
+straightDown(E) is: Quat(0.5<Vector, -0.5 0.5 -0.5   0>)<'', <col0,   0  -1   0   0><col1,   0   0  -1   0><col2,   1   0   0   0>> OR by rows...
+  0   0   1 
+ -1   0   0 
+  0  -1   0 
+>
+straightDown(E) is: Quat(0<Vector, -0.707 0.707   0   0>)<'', <col0,   0  -1   0   0><col1,  -1   0   0   0><col2,   0   0  -1   0>> OR by rows...
+-2.22e-16  -1   0 
+ -1 -2.22e-16   0 
+ -0   0  -1 
+>
+straightDown(E) is: Quat(0.5<Vector, 0.5 -0.5 -0.5   0>)<'', <col0,   0  -1   0   0><col1,   0   0   1   0><col2,  -1   0   0   0>> OR by rows...
+  0   0  -1 
+ -1   0   0 
+  0   1   0 
+>
+STRAIGHT DOWN assertions passed..............................................
+// --------- end STRAIGHT DOWN ----------------------)
+
+
+
+ -------- BANK/ROLL ----------------
+
+Banking/Rolling 90 degrees left...
+plane_E_bankLeft90 is: Quat(0.707<Vector, 0.707   0   0   0>)<'', <col0,   1   0   0   0><col1,   0   0   1   0><col2,   0  -1   0   0>> OR by rows...
+  1   0   0 
+  0 -2.22e-16  -1 
+  0   1 -2.22e-16 
+>
+plane_N_bankLeft90 is: Quat(0.5<Vector, 0.5 0.5 -0.5   0>)<'', <col0,   0   0  -1   0><col1,   1   0   0   0><col2,   0  -1   0   0>> OR by rows...
+  0   1   0 
+  0   0  -1 
+ -1   0   0 
+>
+plane_W_bankLeft90 is: Quat(0<Vector,   0 0.707 -0.707   0>)<'', <col0,  -1   0   0   0><col1,   0   0  -1   0><col2,   0  -1   0   0>> OR by rows...
+ -1   0   0 
+  0 -2.22e-16  -1 
+ -0  -1 -2.22e-16 
+>
+plane_W_bankLeft90 is: Quat(0.5<Vector, 0.5 -0.5 0.5   0>)<'', <col0,   0   0   1   0><col1,  -1   0   0   0><col2,   0  -1   0   0>> OR by rows...
+  0  -1   0 
+  0   0  -1 
+  1   0   0 
+>
+ROLL 90 deg left assertions passed..............................................
+
+
+Banking/Rolling 180 degrees...
+plane_E_bankLeft180 is: Quat(i)<'', <col0,   1   0   0   0><col1,   0  -1   0   0><col2,   0   0  -1   0>> OR by rows...
+  1   0   0 
+  0  -1   0 
+  0   0  -1 
+>
+plane_N_bankLeft180 is: Quat(0<Vector, 0.707   0 -0.707   0>)<'', <col0,   0   0  -1   0><col1,   0  -1   0   0><col2,  -1   0   0   0>> OR by rows...
+-2.22e-16   0  -1 
+  0  -1  -0 
+ -1   0 -2.22e-16 
+>
+plane_W_bankLeft180 is: Quat(k)<'', <col0,  -1   0   0   0><col1,   0  -1   0   0><col2,   0   0   1   0>> OR by rows...
+ -1   0   0 
+  0  -1   0 
+  0   0   1 
+>
+plane_S_bankLeft180 is: Quat(0<Vector, 0.707   0 0.707   0>)<'', <col0,   0   0   1   0><col1,   0  -1   0   0><col2,   1   0   0   0>> OR by rows...
+-2.22e-16   0   1 
+  0  -1   0 
+  1   0 -2.22e-16 
+>
+ROLL 180 degrees assertions passed..............................................
+
+
+Banking/Rolling 90 degrees right...
+plane_E_bankRight90 is: Quat(0.707<Vector, -0.707   0   0   0>)<'', <col0,   1   0   0   0><col1,   0   0  -1   0><col2,   0   1   0   0>> OR by rows...
+  1  -0   0 
+  0 -2.22e-16   1 
+ -0  -1 -2.22e-16 
+>
+plane_N_bankRight90 is: Quat(0.5<Vector, -0.5 0.5 0.5   0>)<'', <col0,   0   0  -1   0><col1,  -1   0   0   0><col2,   0   1   0   0>> OR by rows...
+  0  -1   0 
+  0   0   1 
+ -1   0   0 
+>
+plane_W_bankRight90 is: Quat(0<Vector,   0 0.707 0.707   0>)<'', <col0,  -1   0   0   0><col1,   0   0   1   0><col2,   0   1   0   0>> OR by rows...
+ -1   0   0 
+  0 -2.22e-16   1 
+  0   1 -2.22e-16 
+>
+plane_S_bankRight90 is: Quat(0.5<Vector, -0.5 -0.5 -0.5   0>)<'', <col0,   0   0   1   0><col1,   1   0   0   0><col2,   0   1   0   0>> OR by rows...
+  0   1   0 
+  0   0   1 
+  1   0   0 
+>
+ROLL 90 deg right assertions passed..............................................
+
+ -------- end BANK/ROLL ----------------
+
+ALL PLANE ROTATION ASSERTIONS PASSED ............................................
+
+SEE THIS WEBSITE for DETAILED DIAGRAMS on the TESTS of the PLANE's rotations
+https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/examples/index.htm
+...test_matrices_and_vectors assertions passed====================  FINISHED testing quaternions  ========================... program completed...
+*/

@@ -14,8 +14,8 @@ h * 5 = Quat(15)
 h / 3.0 = Quat(1)
 
 h.magnitude() is 3
-h.unit() is Quat(0.333)g.unit() is Quat(1)
-a.unit() is Quat(0.0333<Vector, 0.0667 0.1 0.133   0>))
+h.unit() is Quat(1)g.unit() is Quat(1)
+a.unit() is Quat(0.183<Vector, 0.365 0.548 0.73   0>))
 
 a.vector() is <Vector,   2   3   4   0>
 a.scalar() is 1
@@ -42,7 +42,7 @@ quat.ii is: -1
 quat.jj is: -1
 quat.kk is: -1
 
-angle (deg) between c and d is: 0.785
+angle (deg) between c and d is: 45
 c_minus_d is: Quat(i)rot_matrix of c_minus_d is: <'', <col0,   1   0   0   0><col1,   0  -1   0   0><col2,   0   0  -1   0>> OR by rows...
   1   0   0 
   0  -1   0 

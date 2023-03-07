@@ -93,11 +93,11 @@ public:
   }
 
   quaternion unit() const{
-    double n = norm();
-    if (n != 0) {
-      return (*this) / n;
+    double m = magnitude();
+    if (m != 0) {
+        return quaternion<double>(w / m, x / m, y / m, z / m);
     }
-    return quaternion();
+    return quaternion<double>(0, 0, 0, 0);
   }
 
   double norm() const{ return w * w + x * x + y * y + z * z; }
@@ -106,13 +106,12 @@ public:
   double dot(const quaternion& v) const{ return w * v.w + x * v.x + y * v.y + z * v.z; }
 
   double angle(const quaternion& v) const{
-    double dp = dot(v);
-    double mag = magnitude() * v.magnitude();
-    if (mag != 0) {
-      return std::acos(dp / mag);
-    }
-    return 0;
-  }
+    quaternion z = conjugate() * v;
+    double zvnorm = z.vector().norm();
+    double zscalar = z.scalar();
+    double angle = atan2(zvnorm, zscalar);
+    return angle * 180.0 / M_PI;
+}
 
   matrix3d<T> rot_matrix() const{
     matrix3d<T> m;
